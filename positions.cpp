@@ -1,7 +1,7 @@
 #include <cmath>
 
 class Position {
-	private float mymyRadius;
+	private float myRadius;
 	private float myAngleInRadians;
 	
 	Position() {
@@ -29,7 +29,7 @@ class Position {
 		if (myRadius < 1.0) {
 			myRadius = 1.0;
 		}
-		myAngleInRadians += angularDistChange;
+		myAngleInRadians += angularDistChange/myRadius;
 		if (myAngleInRadians > 2 * 3.14) {
 			while(myAngleInRadians > 2 * 3.14) {
 				myAngleInRadians -= 6.28;
@@ -54,7 +54,7 @@ class Position {
 	}
 	
 	bool IsAtStatue() {
-		return myRadius == 1;
+		return myRadius == 1.0;
 	}
 
 	bool IsBetween(Position pos1, Position pos2) {
@@ -67,7 +67,7 @@ class Position {
 		return myAngleInRadians;
 	}
 	
-	float getRadius {
+	float getRadius() {
 		return myRadius;
 	}
 
