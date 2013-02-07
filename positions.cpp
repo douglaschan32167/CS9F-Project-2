@@ -1,5 +1,11 @@
 #include <cmath>
 
+
+int main() {
+	Position test1 = Position(7, 0);
+	test1.print();
+} 
+
 class Position {
 	private float mymyRadius;
 	private float myAngleInRadians;
@@ -29,7 +35,7 @@ class Position {
 		if (myRadius < 1.0) {
 			myRadius = 1.0;
 		}
-		myAngleInRadians += angularDistChange;
+		myAngleInRadians += angularDistChange/myRadius;
 		if (myAngleInRadians > 2 * 3.14) {
 			while(myAngleInRadians > 2 * 3.14) {
 				myAngleInRadians -= 6.28;
@@ -45,21 +51,28 @@ class Position {
 	bool Sees(Position pos) {
 	//fill this in
 		value = myRadius * cmath.cos(myAngleInRadians - pos.getAngle);
-		return value >= 1;
+		return value >= 1.0;
 	}
 	
 	void Print() {
-		cout >> "the myRadius is" >> myRadius >> endl;
-		cout >> "the angle is" >> myAngleInRadians >> endl;
+		cout << "the myRadius is" << myRadius << endl;
+		cout << "the angle is" << myAngleInRadians << endl;
 	}
 	
 	bool IsAtStatue() {
-		return myRadius == 1;
+		return myRadius == 1.0;
 	}
 
 	bool IsBetween(Position pos1, Position pos2) {
-		bool isBetweenRadius = (pos1.getRadius() <= myRadius && pos2.getRadius() >= myRadius) || (pos1.getRadius() >= myRadius && pos2.getRadius() <= myRadius);
-		bool isBetweenAngle = true;
+		//all radii are assumed to be the same
+		//assume all positions are within 
+		onetwogap = pos1.getAngle() - pos2.getAngle();
+		if (onetwogap < .25 && myRadius == pos1.getRadius() && myRadius == pos2.getRadius() && pos1.getRadius() == pos2.getRadius()) {
+			return pos1.getAngle() - myAngleInRadians < onetwogap; 
+		} else {
+			return false;
+		}
+		
 	//fill this in
 	}
 	
