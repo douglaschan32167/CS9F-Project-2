@@ -1,5 +1,7 @@
 #include <math.h>
 #include <stdio.h>
+#include <iostream>
+using namespace std;
 
 
 
@@ -91,6 +93,15 @@ int main() {
 	Position test1 = Position(7.0, 0.0);
 	test1.Print();
 	printf("The radius should be 7 and the angle should be 0");
-	
+	printf("%f", test1.getRadius());
+	printf("%f", test1.getAngle());
+	Position statueTest = Position(1.0, 3.14);
+	cout << statueTest.IsAtStatue() << endl;
+	printf("IsAtStatue test: That should say true. ^");
+	Position notAtStatueTest = Position (4.0, 2.1);
+	cout << notAtStatueTest.IsAtStatue() << endl;
+	printf("IsAtStatueTest: that should say 0 ^");
+	cout << test1.Sees(statueTest) << endl;
+	printf("Sees test: That should say 0 ^");
 	return 0;
 } ;
