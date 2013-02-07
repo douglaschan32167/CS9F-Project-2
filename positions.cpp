@@ -1,15 +1,13 @@
-#include <cmath>
+#include <math.h>
+#include <stdio.h>
 
 
-int main() {
-	Position test1 = Position(7, 0);
-	test1.print();
-} 
 
 class Position {
-	private float mymyRadius;
-	private float myAngleInRadians;
-	
+private:
+	float myRadius;
+	float myAngleInRadians;
+public:	
 	Position() {
 		myRadius = 1.0;
 		myAngleInRadians = 0.0;
@@ -50,13 +48,13 @@ class Position {
 	
 	bool Sees(Position pos) {
 	//fill this in
-		value = myRadius * cmath.cos(myAngleInRadians - pos.getAngle);
+		float value = myRadius * cos(myAngleInRadians - pos.getAngle());
 		return value >= 1.0;
 	}
 	
 	void Print() {
-		cout << "the myRadius is" << myRadius << endl;
-		cout << "the angle is" << myAngleInRadians << endl;
+		printf("the myRadius is %f", myRadius);
+		printf("the angle is %f", myAngleInRadians);
 	}
 	
 	bool IsAtStatue() {
@@ -66,7 +64,7 @@ class Position {
 	bool IsBetween(Position pos1, Position pos2) {
 		//all radii are assumed to be the same
 		//assume all positions are within 
-		onetwogap = pos1.getAngle() - pos2.getAngle();
+		float onetwogap = pos1.getAngle() - pos2.getAngle();
 		if (onetwogap < .25 && myRadius == pos1.getRadius() && myRadius == pos2.getRadius() && pos1.getRadius() == pos2.getRadius()) {
 			return pos1.getAngle() - myAngleInRadians < onetwogap; 
 		} else {
@@ -80,7 +78,7 @@ class Position {
 		return myAngleInRadians;
 	}
 	
-	float getRadius {
+	float getRadius() {
 		return myRadius;
 	}
 
@@ -88,3 +86,11 @@ class Position {
 
 
 };
+
+int main() {
+	Position test1 = Position(7.0, 0.0);
+	test1.Print();
+	printf("The radius should be 7 and the angle should be 0");
+	
+	return 0;
+} ;
