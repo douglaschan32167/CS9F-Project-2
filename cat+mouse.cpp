@@ -4,11 +4,58 @@ using namespace std;
 
 #include "positions.h"
 
+// Limit input angles to between 0 and 360 degrees.
+// Given an input angle in degrees, returns the angle reduced to a float between 0.0 and 360.0
+float SimplifyAngleInDegrees(float angleInDegrees) {
+  while (angleInDegrees > 360.0 || angleInDegrees < 0.0) {
+    if (angleInDegrees > 360.0) {
+      angleInDegrees -= 360.0;
+    }
+    else if (angleInDegrees < 0.0) {
+      angleInDegrees += 360.0;
+    }
+}
+// Given an angle in degrees, return its value in radians
+float DegreesToRadians(float degrees) {
+  return degrees * 3.14/180.0;
+}
+
 // You define the GetPositions function.
 // It should read legal cat and mouse positions from the user
 // and return the position values in its two arguments.
-void GetPositions ( ... [you fill these in] ) {
-	... [you fill this in]
+void GetPositions (Position cat, Position mouse ) {
+  float mouseAngleInDegrees, catAngleInDegrees, catRadius, mouseAngleInRadians, catAngleInRadians;
+  cout << "First, enter the starting angle of the mouse in degrees: \n";
+  cin >> mouseAngleInDegrees;
+  cout << "Now, enter the starting angle of the cat in degrees: \n";
+  cin >> catAngleInDegrees;
+  cout << "Lastly, enter the starting radius of the cat in degrees: \n";
+  cin >> catRadius;
+  if (catRadius < 1) {
+    cout << "Invalid starting radius for cat; must be greater than 1.0, \n";
+    return;
+  }
+  // Limit angles to between 0 and 360 degrees.
+  mouseAngleInDegrees = SimplifyAngleInDegrees(mouseAngleInDegrees);
+  catAngleInDegrees = SimplifyAngleInDegrees(catAngleInDegrees);
+  
+  // Convert degrees to radians
+  mouseAngleInRadians = DegreesToRadians(mouseAngleInDegrees);
+  catAngleInRadians = DegreesToRadians(catAngleInDegrees);
+  
+  // Set initial positions of cat and mouse
+  mouse.setAbsolutePosition(1.0, mouseAngleInRadians);
+  cat.setAbsolutePosition(catRadius, catAngleInRadians);
+}
+
+void printGameStatus(Position mouse, Position cat, int minutes) {
+  cout << "After " << minutes << " minute(s), \n";
+  cout << "Cat: \n";
+  cat.Print();
+  cout << "\n";
+  cout << "Mouse: \n";
+  mouse.Print();
+  cout << "\n\n";
 }
 
 // You define the RunChase function.
@@ -17,8 +64,31 @@ void GetPositions ( ... [you fill these in] ) {
 // result of each movement of cat and mouse.  Either the cat will 
 // catch the mouse, or 30 time units will go by and the cat will 
 // give up.
-void RunChase ( ... [you fill this in] ) {
-	... [you fill this in]
+void RunChase (Position cat, Position mouse) {
+  for (int minutes = 1; minutes <= 30; minutes++) {
+    // Save previous cat position before incrementing to see if mouse has been caught
+    Position catPrevPosition;
+    catPrevPosition.setAbsolutePosition(cat.getRadius(), cat.getAngle());
+    
+    if (cat.Sees(mouse)) {
+      cat.IncrementPosition(1.0, 0.0);
+    } else {
+      cat.IncrementPosition(0.0, 1.25);
+    }
+    mouse.IncrementPosition(0.0, 1.0);
+    // Inform user of cat and mouse positions at current time
+    printGameStatus(mouse, cat, minutes);
+    
+    
+    // If cat passes mouse, end simulation
+    if (cat.IsAtStatue() && mouse.isBetween(catPrevPosition, cat)) {
+      cout << "Cat has caught mouse in " << minutes << " minutes! Game over. \n";
+      return;
+    }
+  }
+  
+  cout << "Cat gives up after failing to catch the mouse within 30 minutes. Game over. \n";
+  return;
 }
 
 int main () {
