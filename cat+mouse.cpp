@@ -14,10 +14,23 @@ float SimplifyAngleInDegrees(float angleInDegrees) {
     else if (angleInDegrees < 0.0) {
       angleInDegrees += 360.0;
     }
+  }
 }
 // Given an angle in degrees, return its value in radians
+
 float DegreesToRadians(float degrees) {
   return degrees * 3.14/180.0;
+}
+
+// Print current positions and time-state of simulation
+void printGameStatus(Position mouse, Position cat, int minutes) {
+  cout << "After " << minutes << " minute(s), \n";
+  cout << "Cat: \n";
+  cat.Print();
+  cout << "\n";
+  cout << "Mouse: \n";
+  mouse.Print();
+  cout << "\n\n";
 }
 
 // You define the GetPositions function.
@@ -44,19 +57,10 @@ void GetPositions (Position cat, Position mouse ) {
   catAngleInRadians = DegreesToRadians(catAngleInDegrees);
   
   // Set initial positions of cat and mouse
-  mouse.setAbsolutePosition(1.0, mouseAngleInRadians);
-  cat.setAbsolutePosition(catRadius, catAngleInRadians);
+  mouse.SetAbsolutePosition(1.0, mouseAngleInRadians);
+  cat.SetAbsolutePosition(catRadius, catAngleInRadians);
 }
 
-void printGameStatus(Position mouse, Position cat, int minutes) {
-  cout << "After " << minutes << " minute(s), \n";
-  cout << "Cat: \n";
-  cat.Print();
-  cout << "\n";
-  cout << "Mouse: \n";
-  mouse.Print();
-  cout << "\n\n";
-}
 
 // You define the RunChase function.
 // Given initialized cat and mouse positions,
@@ -68,7 +72,7 @@ void RunChase (Position cat, Position mouse) {
   for (int minutes = 1; minutes <= 30; minutes++) {
     // Save previous cat position before incrementing to see if mouse has been caught
     Position catPrevPosition;
-    catPrevPosition.setAbsolutePosition(cat.getRadius(), cat.getAngle());
+    catPrevPosition.SetAbsolutePosition(cat.getRadius(), cat.getAngle());
     
     if (cat.Sees(mouse)) {
       cat.IncrementPosition(1.0, 0.0);
@@ -81,7 +85,7 @@ void RunChase (Position cat, Position mouse) {
     
     
     // If cat passes mouse, end simulation
-    if (cat.IsAtStatue() && mouse.isBetween(catPrevPosition, cat)) {
+    if (cat.IsAtStatue() && mouse.IsBetween(catPrevPosition, cat)) {
       cout << "Cat has caught mouse in " << minutes << " minutes! Game over. \n";
       return;
     }
