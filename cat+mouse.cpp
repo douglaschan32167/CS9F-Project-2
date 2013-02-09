@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cmath>
-using namespace std;
-
 #include "positions.h"
+
+using namespace std;
 
 // Limit input angles to between 0 and 360 degrees.
 // Given an input angle in degrees, returns the angle reduced to a float between 0.0 and 360.0
@@ -15,6 +15,7 @@ float SimplifyAngleInDegrees(float angleInDegrees) {
       angleInDegrees += 360.0;
     }
   }
+  return angleInDegrees;
 }
 // Given an angle in degrees, return its value in radians
 
@@ -24,13 +25,13 @@ float DegreesToRadians(float degrees) {
 
 // Print current positions and time-state of simulation
 void printGameStatus(Position mouse, Position cat, int minutes) {
-  cout << "After " << minutes << " minute(s), \n";
-  cout << "Cat: \n";
+  cout << "After " << minutes << " minute(s), " << endl;
+  cout << "Cat: " << endl;
   cat.Print();
-  cout << "\n";
-  cout << "Mouse: \n";
+  cout << endl;
+  cout << "Mouse: " << endl;
   mouse.Print();
-  cout << "\n\n";
+  cout << endl << endl;
 }
 
 // You define the GetPositions function.
@@ -38,14 +39,14 @@ void printGameStatus(Position mouse, Position cat, int minutes) {
 // and return the position values in its two arguments.
 void GetPositions (Position cat, Position mouse ) {
   float mouseAngleInDegrees, catAngleInDegrees, catRadius, mouseAngleInRadians, catAngleInRadians;
-  cout << "First, enter the starting angle of the mouse in degrees: \n";
+  cout << "First, enter the starting angle of the mouse in degrees: " << endl;
   cin >> mouseAngleInDegrees;
-  cout << "Now, enter the starting angle of the cat in degrees: \n";
+  cout << "Now, enter the starting angle of the cat in degrees: " << endl;
   cin >> catAngleInDegrees;
-  cout << "Lastly, enter the starting radius of the cat in degrees: \n";
+  cout << "Lastly, enter the starting radius of the cat in degrees: " << endl;
   cin >> catRadius;
   if (catRadius < 1) {
-    cout << "Invalid starting radius for cat; must be greater than 1.0, \n";
+    cout << "Invalid starting radius for cat; must be greater than 1.0, " << endl;
     return;
   }
   // Limit angles to between 0 and 360 degrees.
@@ -86,12 +87,12 @@ void RunChase (Position cat, Position mouse) {
     
     // If cat passes mouse, end simulation
     if (cat.IsAtStatue() && mouse.IsBetween(catPrevPosition, cat)) {
-      cout << "Cat has caught mouse in " << minutes << " minutes! Game over. \n";
+      cout << "Cat has caught mouse in " << minutes << " minutes! Game over." << endl;
       return;
     }
   }
   
-  cout << "Cat gives up after failing to catch the mouse within 30 minutes. Game over. \n";
+  cout << "Cat gives up after failing to catch the mouse within 30 minutes. Game over." << endl;
   return;
 }
 

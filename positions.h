@@ -41,9 +41,10 @@ public:
 	// are the same.
 	bool IsBetween (Position pos1, Position pos2);
 	
+	// Returns the angle (in radians) and the radius of the Position object respectively
   float getAngle();
   float getRadius();
-
+  
 private:
 	float myRadius;
 	float myAngleInRadians;
