@@ -4,6 +4,10 @@
 
 using namespace std;
 
+
+/*        Project Source Code       */
+
+
 // Limit input angles to between 0 and 360 degrees.
 // Given an input angle in degrees, returns the angle reduced to a float between 0.0 and 360.0
 float SimplifyAngleInDegrees(float angleInDegrees) {
@@ -52,14 +56,17 @@ void GetPositions (Position cat, Position mouse ) {
   // Limit angles to between 0 and 360 degrees.
   mouseAngleInDegrees = SimplifyAngleInDegrees(mouseAngleInDegrees);
   catAngleInDegrees = SimplifyAngleInDegrees(catAngleInDegrees);
-  
+    
   // Convert degrees to radians
   mouseAngleInRadians = DegreesToRadians(mouseAngleInDegrees);
-  catAngleInRadians = DegreesToRadians(catAngleInDegrees);
+  catAngleInRadians = DegreesToRadians(catAngleInDegrees);  
   
   // Set initial positions of cat and mouse
   mouse.SetAbsolutePosition(1.0, mouseAngleInRadians);
   cat.SetAbsolutePosition(catRadius, catAngleInRadians);
+  
+  cout << "Simulation start!" << endl;
+  printGameStatus(mouse, cat, 0);
 }
 
 
@@ -70,33 +77,87 @@ void GetPositions (Position cat, Position mouse ) {
 // catch the mouse, or 30 time units will go by and the cat will 
 // give up.
 void RunChase (Position cat, Position mouse) {
-  for (int minutes = 1; minutes <= 30; minutes++) {
-    // Save previous cat position before incrementing to see if mouse has been caught
-    Position catPrevPosition;
-    catPrevPosition.SetAbsolutePosition(cat.getRadius(), cat.getAngle());
-    
-    if (cat.Sees(mouse)) {
-      cat.IncrementPosition(1.0, 0.0);
-    } else {
+  Position catPrevPosition;
+  for (int minutes = 1; minutes <= 30; minutes++) {    
+    if (cat.IsAtStatue()) {
+      // Save previous cat position before incrementing to see if mouse has been caught
+      catPrevPosition = cat;
       cat.IncrementPosition(0.0, 1.25);
+      mouse.IncrementPosition(0.0, 1.0);
+      // If cat passes mouse, end simulation
+      if (mouse.IsBetween(catPrevPosition, cat)) {
+        cout << "Cat has caught mouse in " << minutes << " minutes! NOM NOM NOM... Game over." << endl;
+        return;
+      }
+    } else {
+      if (cat.Sees(mouse)) {
+        cat.IncrementPosition(1.0, 0.0);
+      } else {
+        cat.IncrementPosition(0.0, 1.25);
+      }
+      mouse.IncrementPosition(0.0, 1.0);
     }
-    mouse.IncrementPosition(0.0, 1.0);
     // Inform user of cat and mouse positions at current time
     printGameStatus(mouse, cat, minutes);
-    
-    
-    // If cat passes mouse, end simulation
-    if (cat.IsAtStatue() && mouse.IsBetween(catPrevPosition, cat)) {
-      cout << "Cat has caught mouse in " << minutes << " minutes! Game over." << endl;
-      return;
-    }
   }
-  
   cout << "Cat gives up after failing to catch the mouse within 30 minutes. Game over." << endl;
   return;
 }
 
+
+/*          Unit and Integration Tests        */
+
+
+void SimplifyAngleInDegreesTest() {
+  bool test1, test2, test3, test4, test5;
+  // negative angles should be confined to an angle between 0 and 360
+  test1 = (SimplifyAngleInDegrees(-180.0) == 180.0);
+  test2 = (SimplifyAngleInDegrees(-361.0) == 359.0);
+  
+  
+  // angles exceeding 360 should be confined to an angle between 0 and 360
+  test3 = (SimplifyAngleInDegrees(720.0) == 0.0);
+  test4 = (SimplifyAngleInDegrees(365.0) == 5.0);
+  
+  // If angle is within 0 and 360 degrees, simply return input angle
+  test5 = (SimplifyAngleInDegrees(355.0) == 355.0);
+  
+  if (test1 && test2 && test3 && test4&& test5) {
+    cout << "SimplifyAngleInDegrees Test cases passed." << endl;
+  } else {
+    cout <<"SimplifyAngleInDegrees Test cases fail: " << test1 << " " << test2 << " " << test3 << " " << test4 << " " << test5 << endl;
+  }
+}
+
+void DegreesToRadiansTest() {
+  bool test1, test2, test3, test4;
+  // Test quadrants
+  test1 = (DegreesToRadians(180.0) == 3.14);
+  test2 = (DegreesToRadians(0.0) == 0.0);
+  test3 = (DegreesToRadians(90.0) == 1.57);
+  test4 = (DegreesToRadians(270.0) == 4.71);
+  
+  if (test1 && test2 && test3 && test4) {
+    cout << "DegreesToRadians Test cases passed." << endl;
+  } else {
+    cout << "DegreesToRadians Test cases fail: " << test1 << " " << test2 << " " << test3 << " " << test4 << endl;
+  }
+}
+
+void RunChaseTest() {
+  
+}
+
+
 int main () {
+  /* Uncomment following to run unit and integration tests */
+  
+  SimplifyAngleInDegreesTest();
+  DegreesToRadiansTest();
+  RunChaseTest();
+  
+  /*  ---   End of Tests  --- */
+  
 	Position cat, mouse;
 	GetPositions (cat, mouse);
 	RunChase (cat, mouse);

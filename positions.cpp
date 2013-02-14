@@ -22,8 +22,8 @@ Position::Position(float r, float thetaInRadians) {
 	
 void Position::SetAbsolutePosition (float r, float thetaInRadians) {
 		myRadius = r;
-		myAngleInRadians = thetaInRadians;
-	}
+    myAngleInRadians = thetaInRadians;
+  }
 	
 void Position::IncrementPosition(float rChange, float angularDistChange) {
 		myRadius += rChange;
@@ -45,7 +45,7 @@ void Position::IncrementPosition(float rChange, float angularDistChange) {
 	
 bool Position::Sees(Position pos) {
 	//fill this in
-		float value = myRadius * cos(myAngleInRadians - pos.getAngle());
+		float value = myRadius * cos(myAngleInRadians - pos.myAngleInRadians);
 		return value >= 1.0;
 	}
 	
@@ -61,9 +61,9 @@ bool Position::IsAtStatue() {
 bool Position::IsBetween(Position pos1, Position pos2) {
 		//all radii are assumed to be the same
 		//assume all positions are within 
-		float onetwogap = pos1.getAngle() - pos2.getAngle();
-		if (onetwogap < .25 && myRadius == pos1.getRadius() && myRadius == pos2.getRadius() && pos1.getRadius() == pos2.getRadius()) {
-			return pos1.getAngle() - myAngleInRadians < onetwogap; 
+		float onetwogap = pos1.myAngleInRadians - pos2.myAngleInRadians;
+		if (onetwogap < .25 && myRadius == pos1.myRadius && myRadius == pos2.myRadius && pos1.myRadius == pos2.myRadius) {
+			return pos1.myAngleInRadians - myAngleInRadians < onetwogap; 
 		} else {
 			return false;
 		}
@@ -71,13 +71,6 @@ bool Position::IsBetween(Position pos1, Position pos2) {
 	//fill this in
 	}
 	
-float Position::getAngle() {
-		return myAngleInRadians;
-	}
-	
-float Position::getRadius() {
-		return myRadius;
-	}
 /*
 int main() {
 	Position test1 = Position(7.0, 0.0);
