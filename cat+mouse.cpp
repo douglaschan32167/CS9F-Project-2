@@ -64,9 +64,7 @@ void GetPositions (Position cat, Position mouse ) {
   // Set initial positions of cat and mouse
   mouse.SetAbsolutePosition(1.0, mouseAngleInRadians);
   cat.SetAbsolutePosition(catRadius, catAngleInRadians);
-  
-  cout << "Simulation start!" << endl;
-  printGameStatus(mouse, cat, 0);
+
 }
 
 
@@ -246,7 +244,7 @@ void IsBetweenTest() {
 
 int main () {
   /* Uncomment following to run unit and integration tests */
-  
+  /*
   SimplifyAngleInDegreesTest();
   DegreesToRadiansTest();
   SetAbsolutePositionTest();
@@ -254,12 +252,19 @@ int main () {
   SeesTest();
   IsAtStatueTest();
   IsBetweenTest();
+  cout << endl;
+  cout << "END OF TESTS" << endl;
+  cout << endl;
+  cout << endl;
+  */
   
   /*  ---   End of Tests  --- */
-  /*
+  
 	Position cat, mouse;
 	GetPositions (cat, mouse);
+  cat.Print();
+  mouse.Print();
 	RunChase (cat, mouse);
 	return 0;
-	*/
+	
 }

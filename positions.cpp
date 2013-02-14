@@ -1,5 +1,6 @@
 #include "positions.h"
 #include <math.h>
+#include <cmath>
 #include <stdio.h>
 #include <iostream>
 
@@ -62,14 +63,10 @@ bool Position::IsAtStatue() {
 
 bool Position::IsBetween(Position pos1, Position pos2) {
 		//all radii are assumed to be the same
-		//assume all positions are within 
-		float onetwogap = pos1.myAngleInRadians - pos2.myAngleInRadians;
-		if (onetwogap < .25 && myRadius == pos1.myRadius && myRadius == pos2.myRadius && pos1.myRadius == pos2.myRadius) {
-			return pos1.myAngleInRadians - myAngleInRadians < onetwogap; 
-		} else {
-			return false;
-		}
-  }
+		//assume pos2 - pos1 is less than 3.14 radians.
+  float maxGap = cos(pos2.myAngleInRadians - pos1.myAngleInRadians);
+  return (cos(myAngleInRadians - pos1.myAngleInRadians) > maxGap) && (cos(pos2.myAngleInRadians - myAngleInRadians) > maxGap);
+}
 	
 /*  --- END OF PROJECT SOURCE CODE  --- */
 
