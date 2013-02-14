@@ -22,7 +22,7 @@ public:
 	void IncrementPosition (float rChange, float angularDistChange);
 
 	// Print this position.
-	void Print ( );
+	void Print ( ) ;
 
 	// Return true if someone at this position can see someone or
 	// something at the argument position (i.e. the statue does

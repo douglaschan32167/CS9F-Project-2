@@ -41,7 +41,7 @@ void printGameStatus(Position mouse, Position cat, int minutes) {
 // You define the GetPositions function.
 // It should read legal cat and mouse positions from the user
 // and return the position values in its two arguments.
-void GetPositions (Position cat, Position mouse ) {
+void GetPositions (Position& cat, Position& mouse ) {
   float mouseAngleInDegrees, catAngleInDegrees, catRadius, mouseAngleInRadians, catAngleInRadians;
   cout << "First, enter the starting angle of the mouse in degrees: " << endl;
   cin >> mouseAngleInDegrees;
@@ -64,7 +64,6 @@ void GetPositions (Position cat, Position mouse ) {
   // Set initial positions of cat and mouse
   mouse.SetAbsolutePosition(1.0, mouseAngleInRadians);
   cat.SetAbsolutePosition(catRadius, catAngleInRadians);
-
 }
 
 
@@ -74,7 +73,7 @@ void GetPositions (Position cat, Position mouse ) {
 // result of each movement of cat and mouse.  Either the cat will 
 // catch the mouse, or 30 time units will go by and the cat will 
 // give up.
-void RunChase (Position cat, Position mouse) {
+void RunChase (Position& cat, Position& mouse) {
   Position catPrevPosition;
   for (int minutes = 1; minutes <= 30; minutes++) {    
     if (cat.IsAtStatue()) {
@@ -89,7 +88,7 @@ void RunChase (Position cat, Position mouse) {
       }
     } else {
       if (cat.Sees(mouse)) {
-        cat.IncrementPosition(1.0, 0.0);
+        cat.IncrementPosition(-1.0, 0.0);
       } else {
         cat.IncrementPosition(0.0, 1.25);
       }
@@ -262,8 +261,6 @@ int main () {
   
 	Position cat, mouse;
 	GetPositions (cat, mouse);
-  cat.Print();
-  mouse.Print();
 	RunChase (cat, mouse);
 	return 0;
 	

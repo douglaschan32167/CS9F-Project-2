@@ -55,7 +55,7 @@ bool Position::Sees(Position pos) {
 void Position::Print() {
     cout << "the myRadius is " << myRadius << endl;
 		cout << "the angle is " << myAngleInRadians << endl;
-	}
+	} 
 	
 bool Position::IsAtStatue() {
 		return myRadius == 1.0;
