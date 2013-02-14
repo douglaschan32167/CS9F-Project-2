@@ -5,7 +5,7 @@
 using namespace std;
 
 
-/*        Project Source Code       */
+/*  --- Project Source Code --- */
 
 
 // Limit input angles to between 0 and 360 degrees.
@@ -104,9 +104,18 @@ void RunChase (Position cat, Position mouse) {
   return;
 }
 
+/*  --- END OF PROJECT SOURCE CODE  --- */
 
-/*          Unit and Integration Tests        */
 
+
+
+
+
+
+/*  --- Unit and Integration Tests  --- */
+
+
+// cat+mouse.cpp :
 
 void SimplifyAngleInDegreesTest() {
   bool test1, test2, test3, test4, test5;
@@ -116,7 +125,7 @@ void SimplifyAngleInDegreesTest() {
   
   
   // angles exceeding 360 should be confined to an angle between 0 and 360
-  test3 = (SimplifyAngleInDegrees(720.0) == 0.0);
+  test3 = (SimplifyAngleInDegrees(720.0) == 360.0);
   test4 = (SimplifyAngleInDegrees(365.0) == 5.0);
   
   // If angle is within 0 and 360 degrees, simply return input angle
@@ -130,23 +139,109 @@ void SimplifyAngleInDegreesTest() {
 }
 
 void DegreesToRadiansTest() {
-  bool test1, test2, test3, test4;
   // Test quadrants
-  test1 = (DegreesToRadians(180.0) == 3.14);
-  test2 = (DegreesToRadians(0.0) == 0.0);
-  test3 = (DegreesToRadians(90.0) == 1.57);
-  test4 = (DegreesToRadians(270.0) == 4.71);
+  cout << "DegreesToRadians Test: " << DegreesToRadians(180.0) << " " << DegreesToRadians(0.0) << " " << DegreesToRadians(90.0) << " " << DegreesToRadians(270.0) << endl;
+  cout << "DegreesToRadians Test: Above should be: 3.14, 0.0, 1.57, 4.71" << endl;
+
+}
+
+
+// positions.cpp:
+
+// Assumes Sees() is accurate
+void SetAbsolutePositionTest() {
+  bool test1, test2, test3;
+  Position testLocation1, testLocation2, testLocation3;
+  testLocation2.SetAbsolutePosition(1.5, 0);
+  testLocation3.SetAbsolutePosition(1.0, 3.14);
   
-  if (test1 && test2 && test3 && test4) {
-    cout << "DegreesToRadians Test cases passed." << endl;
+  test1 = (testLocation1.Sees(testLocation1) == true);
+  test2 = (testLocation2.Sees(testLocation1) == true);
+  test3 = (testLocation3.Sees(testLocation1) == false);
+  
+  if (test1 && test2 && test3) {
+    cout << "SetAbsolutePosition Test cases passed." << endl;
   } else {
-    cout << "DegreesToRadians Test cases fail: " << test1 << " " << test2 << " " << test3 << " " << test4 << endl;
+    cout << "SetAbsolutePosition Test cases fail: " << test1 << " " << test2 << " " << test3 << endl;
+  }
+  
+}
+
+// Assumes Sees() is accurate
+void IncrementPositionTest() {
+  bool test1, test2, test3;
+  Position testLocation1;
+  Position testLocation2(1.5);
+  Position testLocation3(1.0, 3.14);
+  
+  testLocation1.IncrementPosition(0.0, 3.14);
+  testLocation2.IncrementPosition(1.0, 0.0);
+  
+  test1 = (testLocation2.Sees(testLocation1) == false);
+  test2 = (testLocation3.Sees(testLocation1) == true);
+  test3 = (testLocation3.Sees(testLocation2) == false);
+  
+  if (test1 && test2 && test3) {
+    cout << "IncrementPosition Test cases passed." << endl;
+  } else {
+    cout << "IncrementPosition Test cases fail: " << test1 << " " << test2 << " " << test3 << endl;
   }
 }
 
-void RunChaseTest() {
+void SeesTest() {
+  bool test1, test2, test3;
+  Position testLocation1;
+  Position testLocation2(1.5);
+  Position testLocation3(1.0, 3.14);
   
+  test1 = (testLocation1.Sees(testLocation1) == true);
+  test2 = (testLocation2.Sees(testLocation1) == true);
+  test3 = (testLocation3.Sees(testLocation1) == false);
+  
+  if (test1 && test2 && test3) {
+    cout << "Sees Test cases passed." << endl;
+  } else {
+    cout << "Sees Test cases fail: " << test1 << " " << test2 << " " << test3 << endl;
+  }
 }
+
+void IsAtStatueTest() {
+  bool test1, test2;
+  Position atStatue;
+  Position notAtStatue(2.5);
+  
+  test1 = (atStatue.IsAtStatue() == true);
+  test2 = (notAtStatue.IsAtStatue() == false);
+  
+  if (test1 && test2) {
+    cout << "IsAtStatue Test cases passed." << endl;
+  } else {
+    cout << "IsAtStatue Test cases fail: " << test1 << " " << test2 << endl;
+  }
+}
+
+void IsBetweenTest() {
+  bool test1, test2, test3;
+  Position testLocation1;
+  Position testLocation2(1.0, 1.5);
+  Position testLocation3(1.0, 1.7);
+  
+  test1 = (testLocation1.IsBetween(testLocation2, testLocation3) == false);
+  test2 = (testLocation2.IsBetween(testLocation1, testLocation3) == true);
+  test3 = (testLocation3.IsBetween(testLocation1, testLocation2) == false);
+  
+  if (test1 && test2 && test3) {
+    cout << "IsBetween Test cases passed." << endl;
+  } else {
+    cout << "IsBetween Test cases fail: " << test1 << " " << test2 << " " << test3 << endl;
+  }
+}
+
+/*  --- END OF TESTS  --- */
+
+
+
+/*  -- MAIN FUNCTION  --- */
 
 
 int main () {
@@ -154,12 +249,17 @@ int main () {
   
   SimplifyAngleInDegreesTest();
   DegreesToRadiansTest();
-  RunChaseTest();
+  SetAbsolutePositionTest();
+  IncrementPositionTest();
+  SeesTest();
+  IsAtStatueTest();
+  IsBetweenTest();
   
   /*  ---   End of Tests  --- */
-  
+  /*
 	Position cat, mouse;
 	GetPositions (cat, mouse);
 	RunChase (cat, mouse);
 	return 0;
+	*/
 }

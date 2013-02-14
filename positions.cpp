@@ -5,6 +5,8 @@
 
 using namespace std;
 
+/*  --- Project Source Code --- */
+
 Position::Position() {
 		myRadius = 1.0;
 		myAngleInRadians = 0.0;
@@ -67,9 +69,11 @@ bool Position::IsBetween(Position pos1, Position pos2) {
 		} else {
 			return false;
 		}
-		
-	//fill this in
-	}
+  }
+	
+/*  --- END OF PROJECT SOURCE CODE  --- */
+
+
 	
 /*
 int main() {
