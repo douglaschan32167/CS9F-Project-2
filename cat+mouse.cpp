@@ -5,7 +5,7 @@
 using namespace std;
 
 
-/*  --- Project Source Code --- */
+/*  --- PROJECT SOURCE CODE --- */
 
 
 // Limit input angles to between 0 and 360 degrees.
@@ -41,7 +41,7 @@ void printGameStatus(Position mouse, Position cat, int minutes) {
 // You define the GetPositions function.
 // It should read legal cat and mouse positions from the user
 // and return the position values in its two arguments.
-void GetPositions (Position& cat, Position& mouse ) {
+void GetPositions (Position& cat, Position& mouse) {
   float mouseAngleInDegrees, catAngleInDegrees, catRadius, mouseAngleInRadians, catAngleInRadians;
   cout << "First, enter the starting angle of the mouse in degrees: " << endl;
   cin >> mouseAngleInDegrees;
@@ -73,29 +73,32 @@ void GetPositions (Position& cat, Position& mouse ) {
 // result of each movement of cat and mouse.  Either the cat will 
 // catch the mouse, or 30 time units will go by and the cat will 
 // give up.
-void RunChase (Position& cat, Position& mouse) {
+void RunChase (Position& cat, Position& mouse, int option = 0) {
   Position catPrevPosition;
   for (int minutes = 1; minutes <= 30; minutes++) {    
     if (cat.IsAtStatue()) {
       // Save previous cat position before incrementing to see if mouse has been caught
       catPrevPosition = cat;
       cat.IncrementPosition(0.0, 1.25);
-      mouse.IncrementPosition(0.0, 1.0);
       // If cat passes mouse, end simulation
       if (mouse.IsBetween(catPrevPosition, cat)) {
         cout << "Cat has caught mouse in " << minutes << " minutes! NOM NOM NOM... Game over." << endl;
         return;
       }
+      
     } else {
       if (cat.Sees(mouse)) {
         cat.IncrementPosition(-1.0, 0.0);
       } else {
         cat.IncrementPosition(0.0, 1.25);
       }
-      mouse.IncrementPosition(0.0, 1.0);
     }
+    mouse.IncrementPosition(0.0, 1.0);
+    
     // Inform user of cat and mouse positions at current time
-    printGameStatus(mouse, cat, minutes);
+    if (option == 0) {
+      printGameStatus(mouse, cat, minutes);
+    }
   }
   cout << "Cat gives up after failing to catch the mouse within 30 minutes. Game over." << endl;
   return;
@@ -234,16 +237,43 @@ void IsBetweenTest() {
   }
 }
 
-/*  --- END OF TESTS  --- */
+void RunChaseTest() {
+  cout << "RunChaseTest: " << endl;
+  // Catch immediately
+  Position cat0(1.0, DegreesToRadians(35));
+  Position mouse0(1.0, DegreesToRadians(SimplifyAngleInDegrees(396)));
+  RunChase(cat0, mouse0, 1);
+  cout << "^ Should have caught immediately" << endl;
+  
+  // Catch after 17 minutes
+  Position cat1(3.2, DegreesToRadians(0.0));
+  Position mouse1(1.0, DegreesToRadians(SimplifyAngleInDegrees(-57.0)));
+  RunChase(cat1, mouse1, 1);
+  cout << "^ Should have caught after seventeen minutes" << endl;
+  
+  // Fail to catch
+  Position cat2(8.1, DegreesToRadians(0.0));
+  Position mouse2(1.0, DegreesToRadians(SimplifyAngleInDegrees(45)));
+  RunChase(cat2, mouse2, 1);
+  cout << "^ Should fail to catch" << endl;
+  
+  // Catch after 30 minutes
+  Position cat3(8.1, DegreesToRadians(8.85));
+  Position mouse3(1.0, DegreesToRadians(SimplifyAngleInDegrees(45)));
+  RunChase(cat3, mouse3, 1);
+  cout << "^ Should have caught after thirty minutes" << endl;
+}
 
 
 
 /*  -- MAIN FUNCTION  --- */
 
 
+
 int main () {
+
   /* Uncomment following to run unit and integration tests */
-  /*
+  
   SimplifyAngleInDegreesTest();
   DegreesToRadiansTest();
   SetAbsolutePositionTest();
@@ -251,11 +281,12 @@ int main () {
   SeesTest();
   IsAtStatueTest();
   IsBetweenTest();
+  RunChaseTest();
   cout << endl;
   cout << "END OF TESTS" << endl;
   cout << endl;
   cout << endl;
-  */
+  
   
   /*  ---   End of Tests  --- */
   
@@ -263,5 +294,5 @@ int main () {
 	GetPositions (cat, mouse);
 	RunChase (cat, mouse);
 	return 0;
-	
+
 }

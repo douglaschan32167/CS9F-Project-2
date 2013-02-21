@@ -6,7 +6,7 @@
 
 using namespace std;
 
-/*  --- Project Source Code --- */
+/*  --- PROJECT SOURCE CODE --- */
 
 Position::Position() {
 		myRadius = 1.0;
